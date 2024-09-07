@@ -132,10 +132,4 @@ Se você deseja contribuir para o projeto, siga estes passos:
 4. Envie sua branch para o repositório (`git push origin feature-nome`).
 5. Abra um Pull Request.
 
-## Licença
-
-Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
----
-
 Sinta-se à vontade para personalizar este README conforme necessário para refletir com mais precisão o seu projeto e suas preferências.
