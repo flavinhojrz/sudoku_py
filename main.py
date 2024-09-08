@@ -1,9 +1,11 @@
 import random
 
+
 def create_table(tamanho):
     # Tabuleiro 'tamanho x tamanho' preenchido com zeros
     tabuleiro = [[0 for _ in range(tamanho)] for _ in range(tamanho)]
     return tabuleiro
+
 
 def is_valid(tabuleiro, num, row, col):
     # Verificar se o número já está na linha
@@ -27,6 +29,7 @@ def is_valid(tabuleiro, num, row, col):
 
     return True
 
+
 def fill_board(tabuleiro):
     """
     Preenche o tabuleiro de acordo com as regras do Sudoku.
@@ -45,16 +48,21 @@ def fill_board(tabuleiro):
                 for num in numeros_possiveis:
                     if is_valid(tabuleiro, num, row, col):
                         tabuleiro[row][col] = num
+                        print_board(tabuleiro)
+                        print("\n")
                         # Recursão para preencher o restante do tabuleiro
                         if fill_board(tabuleiro):
                             return True
                         # Se não conseguir preencher o restante, desfazer a última inserção (backtracking)
                         tabuleiro[row][col] = 0
+                        print_board(tabuleiro)
+                        print("\n")
 
                 # Se nenhum número funcionar, retornar falso para o backtracking
                 return False
 
     return True
+
 
 def print_board(tabuleiro):
     tamanho = len(tabuleiro)
@@ -69,6 +77,7 @@ def print_board(tabuleiro):
                 print(tabuleiro[i][j])
             else:
                 print(str(tabuleiro[i][j]) + " ", end="")
+
 
 def remove_numbers(tabuleiro, n_removals):
     """
@@ -87,7 +96,46 @@ def remove_numbers(tabuleiro, n_removals):
             tabuleiro[row][col] = 0
             count += 1
 
+
+def solve_sudoku(tabuleiro):
+    """
+    Tenta resolver o tabuleiro de Sudoku usando backtracking.
+    """
+    tamanho = len(tabuleiro)
+
+    # Encontra uma célula vazia (com valor 0)
+    for row in range(tamanho):
+        for col in range(tamanho):
+            if tabuleiro[row][col] == 0:
+                # Testa números de 1 a 9 para essa célula
+                for num in range(1, 10):
+                    if is_valid(tabuleiro, num, row, col):
+                        tabuleiro[row][col] = num
+
+                        # Recursivamente tenta preencher o restante
+                        if solve_sudoku(tabuleiro):
+                            return True
+
+                        # Se falhar, volta atrás e tenta outro número
+                        tabuleiro[row][col] = 0
+
+                # Se nenhum número funcionar, retorna falso
+                return False
+
+    # Se não encontrar células vazias, o Sudoku está resolvido
+    return True
+
+
 board = create_table(9)
-fill_board(board)  
+fill_board(board)
 remove_numbers(board, 45)
+
+if solve_sudoku(board):
+    print("Sudoku resolvido com sucesso!")
+    print("\n")
+else:
+    print("Não foi possível resolver o Sudoku.")
+    print("\n")
+
 print_board(board)
+print("\n")
